@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	
+
 	"github.com/gorilla/mux"
 )
 
@@ -67,6 +67,7 @@ func GetNoteHandlerFromId(w http.ResponseWriter, r *http.Request) {
 	if _, ok := noteStore[k]; ok {
 		//encode note in JSon
 		j, _ := json.Marshal(noteStore[k])
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(j)
 	} else { 
@@ -113,8 +114,6 @@ func DeleteNoteHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	fmt.Println("Test RESTful")
-
-	//mux := http.NewServeMux()
 
 	r := mux.NewRouter().StrictSlash(false) 
 	r.HandleFunc("/api/notes", GetNoteHandler).Methods("GET") 
